@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Ola's Fastfood Restaurant</title>
+
+    <meta name="description"
+          content="Discover delicious Nigerian meals made with fresh ingredients at Ola's Fastfood Restaurant. Explore our menu and enjoy deliciousness in every bite.">
+
+    <style>
+
+        /* GENERAL PAGE */
+
+        body {
+            background-color: #fff8e7;
+            font-family: Georgia, serif;
+            margin: 0;
+            color: #333333;
+        }
+
+
+        /* NAVIGATION BAR */
+
+        .navbar {
+            background-color: #8b0000;
+            padding: 18px;
+            text-align: center;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0 20px;
+        }
+
+        .navbar a:hover {
+            color: #ffd700;
+        }
+
+
+        /* HERO SECTION */
+
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            background-color: #fff1c9;
+        }
+
+        .hero h1 {
+            color: #8b0000;
+            font-size: 45px;
+            margin-bottom: 10px;
+        }
+
+        .hero h2 {
+            color: #b45309;
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 19px;
+            max-width: 700px;
+            margin: 0 auto 25px auto;
+            line-height: 1.6;
+        }
+
+
+        /* LOGO */
+
+        .logo {
+            display: block;
+            width: 400px;
+            max-width: 90%;
+            height: 140px;
+            object-fit: contain;
+            margin: 0 auto 20px auto;
+        }
+
+
+        /* BUTTON */
+
+        .menu-button {
+            display: inline-block;
+            background-color: #8b0000;
+            color: white;
+            padding: 14px 28px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .menu-button:hover {
+            background-color: #b45309;
+        }
+
+
+        /* GENERAL SECTIONS */
+
+        section {
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        section h2 {
+            color: #8b0000;
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+
+
+        /* ABOUT SECTION */
+
+        .about-text {
+            max-width: 750px;
+            margin: auto;
+            font-size: 18px;
+            line-height: 1.7;
+        }
+
+        .passion {
+            color: #8b0000;
+            font-size: 20px;
+            font-weight: bold;
+            font-style: italic;
+            margin-top: 20px;
+        }
+
+
+        /* WHY CHOOSE US */
+
+        .features {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .feature {
+            background-color: white;
+            width: 250px;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature h3 {
+            color: #8b0000;
+            font-size: 21px;
+        }
+
+        .feature p {
+            line-height: 1.5;
+        }
+
+
+        /* FEATURED MEALS */
+
+        .meals {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .meal {
+            background-color: white;
+            width: 260px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+
+        .meal img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .meal h3 {
+            color: #8b0000;
+            font-size: 21px;
+        }
+
+        .meal p {
+            line-height: 1.5;
+        }
+
+
+        /* RECIPE SECTION */
+
+        .recipe-section {
+            background-color: #fff1c9;
+        }
+
+        .recipe-section p {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .recipe-link {
+            color: #8b0000;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .recipe-link:hover {
+            color: #b45309;
+        }
+
+
+        /* FOOTER */
+
+        footer {
+            background-color: #8b0000;
+            color: white;
+            text-align: center;
+            padding: 25px;
+            margin-top: 20px;
+        }
+
+        footer p {
+            margin: 5px;
+        }
+
+
+        /* MOBILE PHONE */
+
+        @media (max-width: 600px) {
+
+            .navbar a {
+                display: block;
+                margin: 10px;
+            }
+
+            .hero h1 {
+                font-size: 34px;
+            }
+
+            .hero h2 {
+                font-size: 23px;
+            }
+
+            .feature,
+            .meal {
+                width: 85%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- NAVIGATION BAR -->
+
+    <nav class="navbar">
+
+        <a href="index.html">Home</a>
+
+        <a href="order-form.html">Menu</a>
+
+        <a href="recipe.html">Recipe</a>
+
+    </nav>
+
+
+    <!-- HERO SECTION -->
+
+    <header class="hero">
+
+        <img
+            src="fastfood-logo.png"
+            class="logo"
+            alt="Ola's Fastfood Restaurant logo"
+        >
+
+        <h1>Ola's Fastfood Restaurant</h1>
+
+        <h2>Deliciousness in every bite!</h2>
+
+        <p>
+            Freshly prepared meals, delicious Nigerian flavours,
+            and quality ingredients made with passion.
+            Come hungry, leave happy!
+        </p>
+
+        <a href="order-form.html" class="menu-button">
+            View Our Menu
+        </a>
+
+    </header>
+
+
+    <!-- ABOUT SECTION -->
+
+    <section>
+
+        <h2>Welcome to Ola's Fastfood Restaurant</h2>
+
+        <p class="about-text">
+
+            At Ola's Fastfood Restaurant, we believe that good food
+            brings people together. Every meal is carefully prepared
+            using quality ingredients to give you a delicious and
+            satisfying experience.
+
+        </p>
+
+        <p class="passion">
+            Cooking is our passion and we take it very seriously!
+        </p>
+
+    </section>
+
+
+    <!-- WHY CHOOSE US -->
+
+    <section>
+
+        <h2>Why Choose Us?</h2>
+
+        <div class="features">
+
+            <div class="feature">
+
+                <h3>🍴 Fresh Ingredients</h3>
+
+                <p>
+                    We use quality and fresh ingredients
+                    to prepare our meals.
+                </p>
+
+            </div>
+
+
+            <div class="feature">
+
+                <h3>🌶️ Great Flavours</h3>
+
+                <p>
+                    Enjoy delicious meals packed with
+                    rich and satisfying flavours.
+                </p>
+
+            </div>
+
+
+            <div class="feature">
+
+                <h3>❤️ Made With Care</h3>
+
+                <p>
+                    Every meal is prepared with care,
+                    passion, and attention to detail.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FEATURED MEALS -->
+
+    <section>
+
+        <h2>Our Featured Meals</h2>
+
+        <div class="meals">
+
+
+            <!-- JOLLOF RICE -->
+
+            <div class="meal">
+
+                <img
+                    src="jollof rice.jpg"
+                    alt="Smoky Jollof Rice"
+                >
+
+                <h3>🍚 Smoky Jollof Rice</h3>
+
+                <p>
+                    Enjoy our delicious and flavorful
+                    smoky Jollof Rice prepared with
+                    carefully selected ingredients.
+                </p>
+
+            </div>
+
+
+            <!-- FRIED RICE -->
+
+            <div class="meal">
+
+                <img
+                    src="fried rice.jpg"
+                    alt="Fried Rice"
+                >
+
+                <h3>🍛 Fried Rice</h3>
+
+                <p>
+                    Enjoy our tasty and colorful Fried Rice,
+                    prepared with fresh ingredients and
+                    delicious seasoning.
+                </p>
+
+            </div>
+
+
+            <!-- FRIES AND CHICKEN -->
+
+            <div class="meal">
+
+                <img
+                    src="fries chicken.jpg"
+                    alt="Fries and Chicken"
+                >
+
+                <h3>🍟 Fries & Chicken</h3>
+
+                <p>
+                    A delicious combination of crispy
+                    fries and perfectly prepared chicken.
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+        <br>
+
+
+        <a href="order-form.html" class="menu-button">
+            Order Your Meal
+        </a>
+
+    </section>
+
+
+    <!-- RECIPE SECTION -->
+
+    <section class="recipe-section">
+
+        <h2>Want to Know Our Secret?</h2>
+
+        <p>
+            Discover how to prepare our delicious
+            smoky Jollof Rice at home.
+        </p>
+
+        <a href="recipe.html" class="recipe-link">
+            Learn How to Make Smoky Jollof Rice →
+        </a>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <p>
+            <strong>Ola's Fastfood Restaurant</strong>
+        </p>
+
+        <p>
+            Deliciousness in every bite!
+        </p>
+
+        <p>
+            © 2026 Ola's Fastfood Restaurant. All rights reserved.
+        </p>
+
+    </footer>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script src="script.js"></script>
+
+
+</body>
+
+</html>

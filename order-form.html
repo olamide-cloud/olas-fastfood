@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Ola's Fastfood - Menu</title>
+
+
+    <style>
+
+        /* =========================
+           GENERAL PAGE
+           ========================= */
+
+        body {
+            background-color: #fff8e7;
+            font-family: Georgia, serif;
+            margin: 0;
+            color: #333333;
+        }
+
+
+        /* =========================
+           NAVIGATION BAR
+           ========================= */
+
+        .navbar {
+            background-color: #8b0000;
+            padding: 18px;
+            text-align: center;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0 20px;
+        }
+
+        .navbar a:hover {
+            color: #ffd700;
+        }
+
+
+        /* =========================
+           PAGE HEADER
+           ========================= */
+
+        .page-header {
+            text-align: center;
+            padding: 45px 20px 30px 20px;
+        }
+
+        .page-header h1 {
+            color: #8b0000;
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .welcome {
+            color: #555;
+            font-size: 18px;
+            max-width: 700px;
+            margin: auto;
+            line-height: 1.6;
+        }
+
+
+        /* =========================
+           MENU SECTIONS
+           ========================= */
+
+        .menu-section {
+            max-width: 1000px;
+            margin: 0 auto 50px auto;
+            padding: 0 20px;
+        }
+
+        .menu-section h2 {
+            color: #8b0000;
+            text-align: center;
+            font-size: 30px;
+            border-bottom: 2px solid #b45309;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+        }
+
+
+        /* =========================
+           MENU CARDS
+           ========================= */
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .menu-card {
+            background-color: white;
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+            transition: transform 0.2s;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .menu-card h3 {
+            color: #8b0000;
+            margin-top: 0;
+            font-size: 21px;
+        }
+
+        .menu-card p {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .price {
+            color: #b45309;
+            font-size: 20px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+
+        /* =========================
+           FOOD SELECTION
+           ========================= */
+
+        .food-item,
+        .soup-item,
+        .grilled-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            border-top: 1px solid #eeeeee;
+            padding: 15px 0;
+        }
+
+        .food-item:first-child,
+        .soup-item:first-child,
+        .grilled-item:first-child {
+            border-top: none;
+        }
+
+        .food-item label,
+        .soup-item label,
+        .grilled-item label {
+            min-width: 0;
+            width: auto;
+            font-weight: bold;
+            cursor: pointer;
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           CHECKBOXES
+           ========================= */
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #8b0000;
+            cursor: pointer;
+        }
+
+
+        /* =========================
+           QUANTITY INPUTS
+           ========================= */
+
+        .food-quantity,
+        .soup-quantity,
+        .grilled-quantity {
+            width: 65px;
+            padding: 9px;
+            border: 1px solid #aaa;
+            border-radius: 5px;
+            font-family: Georgia;
+            font-size: 15px;
+        }
+
+
+        /* Remove number input arrows */
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"] {
+            appearance: textfield;
+        }
+
+
+        /* =========================
+           SIDES AND DRINKS
+           ========================= */
+
+        .side-container {
+            background-color: white;
+            max-width: 600px;
+            margin: auto;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        .side-container label {
+            font-weight: bold;
+            display: inline-block;
+            margin: 10px 0;
+        }
+
+        select,
+        input[type="number"],
+        input[type="text"],
+        input[type="tel"],
+        input[type="date"] {
+            padding: 10px;
+            border: 1px solid #999;
+            border-radius: 5px;
+            font-family: Georgia;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+
+        #side {
+            width: 250px;
+            margin-left: 10px;
+        }
+
+        #sideQuantity {
+            width: 80px;
+            margin-left: 10px;
+        }
+
+
+        /* =========================
+           CUSTOMER INFORMATION
+           ========================= */
+
+        .customer-section {
+            max-width: 650px;
+            margin: auto;
+            padding: 0 20px 40px 20px;
+        }
+
+        .customer-form {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        .customer-form label {
+            display: block;
+            font-weight: bold;
+            color: #8b0000;
+            margin-top: 15px;
+            margin-bottom: 7px;
+        }
+
+        .customer-form input {
+            width: 100%;
+        }
+
+
+        /* =========================
+           BUTTONS
+           ========================= */
+
+        .button-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        button {
+            background-color: #8b0000;
+            color: white;
+            padding: 13px 28px;
+            border: none;
+            border-radius: 6px;
+            font-size: 17px;
+            font-family: Georgia;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        button:hover {
+            background-color: #b45309;
+        }
+
+        #clearButton {
+            background-color: #555;
+        }
+
+        #clearButton:hover {
+            background-color: #333;
+        }
+
+
+        /* =========================
+           SHOPPING CART
+           ========================= */
+
+        #cart {
+            background-color: white;
+            max-width: 650px;
+            margin: 30px auto;
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid #b45309;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        #cart h2 {
+            color: #8b0000;
+            text-align: center;
+            margin-top: 0;
+        }
+
+        #cartItems p {
+            padding: 8px 0;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        #cartTotal {
+            color: #8b0000;
+            text-align: right;
+            font-size: 21px;
+        }
+
+
+        /* =========================
+           CART PLUS AND MINUS
+           ========================= */
+
+        .plus-button,
+        .minus-button {
+            background-color: #8b0000;
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            margin: 0 3px;
+        }
+
+        .plus-button:hover,
+        .minus-button:hover {
+            background-color: #b45309;
+        }
+
+
+        /* =========================
+           ORDER SUMMARY
+           ========================= */
+
+        #orderSummary {
+            background-color: white;
+            max-width: 650px;
+            margin: 30px auto 50px auto;
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid #8b0000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            line-height: 1.6;
+        }
+
+        #orderSummary:empty {
+            display: none;
+        }
+
+        #orderSummary h2 {
+            color: #8b0000;
+            text-align: center;
+            margin-top: 0;
+        }
+
+        #orderSummary h3 {
+            color: #8b0000;
+        }
+
+
+        /* =========================
+           FOOTER
+           ========================= */
+
+        footer {
+            background-color: #8b0000;
+            color: white;
+            text-align: center;
+            padding: 25px;
+            margin-top: 40px;
+        }
+
+        footer p {
+            margin: 5px;
+        }
+
+
+        /* =========================
+           MOBILE RESPONSIVE DESIGN
+           ========================= */
+
+        @media (max-width: 700px) {
+
+            .navbar a {
+                display: block;
+                margin: 10px;
+            }
+
+            .page-header h1 {
+                font-size: 32px;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .food-item,
+            .soup-item,
+            .grilled-item {
+                align-items: center;
+            }
+
+            .side-container {
+                margin: 0 20px;
+            }
+
+            #side {
+                width: 100%;
+                margin: 5px 0 15px 0;
+            }
+
+            #sideQuantity {
+                margin-left: 5px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         NAVIGATION
+         ========================= -->
+
+    <nav class="navbar">
+
+        <a href="index.html">Home</a>
+
+        <a href="order-form.html">Menu</a>
+
+        <a href="recipe.html">Recipe</a>
+
+    </nav>
+
+
+    <!-- =========================
+         PAGE HEADER
+         ========================= -->
+
+    <header class="page-header">
+
+        <h1>Ola's Fastfood Menu</h1>
+
+        <p class="welcome">
+
+            Choose your favorite meals, select your quantity,
+            provide your delivery details, and place your order!
+
+        </p>
+
+    </header>
+
+
+    <!-- =========================
+         MAIN DISHES
+         ========================= -->
+
+    <section class="menu-section">
+
+        <h2>🍚 Main Dishes</h2>
+
+        <div class="menu-grid">
+
+
+            <div class="menu-card">
+
+                <h3>Asun Rice</h3>
+
+                <p>
+                    Flavorful rice served with delicious spicy Asun.
+                </p>
+
+                <div class="price">₦8,500</div>
+
+                <div class="food-item">
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            class="food-checkbox"
+                            value="8500"
+                            data-name="Asun Rice"
+                        >
+
+                        Select Asun Rice
+
+                    </label>
+
+                    <input
+                        type="number"
+                        class="food-quantity"
+                        min="0"
+                        value="0"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="menu-card">
+
+                <h3>Fried Rice</h3>
+
+                <p>
+                    Colorful and delicious fried rice prepared
+                    with fresh ingredients.
+                </p>
+
+                <div class="price">₦6,500</div>
+
+                <div class="food-item">
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            class="food-checkbox"
+                            value="6500"
+                            data-name="Fried Rice"
+                        >
+
+                        Select Fried Rice
+
+                    </label>
+
+                    <input
+                        type="number"
+                        class="food-quantity"
+                        min="0"
+                        value="0"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="menu-card">
+
+                <h3>Ofada Rice</h3>
+
+                <p>
+                    Traditional Ofada rice served with rich local sauce.
+                </p>
+
+                <div class="price">₦9,500</div>
+
+                <div class="food-item">
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            class="food-checkbox"
+                            value="9500"
+                            data-name="Ofada Rice"
+                        >
+
+                        Select Ofada Rice
+
+                    </label>
+
+                    <input
+                        type="number"
+                        class="food-quantity"
+                        min="0"
+                        value="0"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="menu-card">
+
+                <h3>Coconut Rice</h3>
+
+                <p>
+                    Delicious rice infused with rich coconut flavour.
+                </p>
+
+                <div class="price">₦9,500</div>
+
+                <div class="food-item">
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            class="food-checkbox"
+                            value="9500"
+                            data-name="Coconut Rice"
+                        >
+
+                        Select Coconut Rice
+
+                    </label>
+
+                    <input
+                        type="number"
+                        class="food-quantity"
+                        min="0"
+                        value="0"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="menu-card">
+
+                <h3>Ayamase Rice</h3>
+
+                <p>
+                    Tasty rice served with delicious Ayamase sauce.
+                </p>
+
+                <div class="price">₦7,500</div>
+
+                <div class="food-item">
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            class="food-checkbox"
+                            value="7500"
+                            data-name="Ayamase Rice"
+                        >
+
+                        Select Ayamase Rice
+
+                    </label>
+
+                    <input
+                        type="number"
+                        class="food-quantity"
+                        min="0"
+                        value="0"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="menu-card">
+
+                <h3>Native Rice</h3>
+
+                <p>
+                    A traditional Nigerian rice dish packed with flavour.
+                </p>
+
+                <div class="price">₦7,500</div>
+
+                <div class="food-item">
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            class="food-checkbox"
+                            value="7500"
+                            data-name="Native Rice"
+                        >
+
+                        Select Native Rice
+
+                    </label>
+
+                    <input
+                        type="number"
+                        class="food-quantity"
+                        min="0"
+                        value="0"
+                    >
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         SOUPS AND SWALLOWS
+         ========================= -->
+
+    <section class="menu-section">
+
+        <h2>🥣 Soups and Swallows</h2>
+
+        <div class="menu-grid">
+
+
+            <div class="menu-card">
+
+                <h3>Okro</h3>
+
+                <p>Fresh and delicious Nigerian Okro soup.</p>
+
+                <div class="price">₦2,000</div>
+
+                <div class="soup-item">
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            class="soup-checkbox"
+                            value="2000"
+                            data-name="Okro"
+                        >
+
+                        Select Okro
+
+                    </label>
+
+                    <input
+                        type="number"
+                        class="soup-quantity"
+                        min="0"
+                        value="0"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="menu-card">
+
+                <h3>Egusi</h3>
+
+                <p>Rich and tasty Egusi soup prepared with care.</p>
+
+                <div class="price">₦2,500</div>
+
+                <div class="soup-item">
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            class="soup-checkbox"
+                            value="2500"
+                            data-name="Egusi"
+                        >
+
+                        Select Egusi
+
+                    </label>
+
+                    <input
+                        type="number"
+                        class="soup-quantity"
+                        min="0"
+                        value="0"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="menu-card">
+
+                <h3>Ogbono</h3>
+
+                <p>Delicious traditional Nigerian Ogbono soup.</p>
+
+                <div class="price">₦2,500</div>
+
+                <div class="soup-item">
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            class="soup-checkbox"
+                            value="2500"
+                            data-name="Ogbono"
+                        >
+
+                        Select Ogbono
+
+                    </label>
+
+                    <input
+                        type="number"
+                        class="soup-quantity"
+                        min="0"
+                        value="0"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="menu-card">
+
+                <h3>Efo Riro</h3>
+
+                <p>Rich vegetable soup with a delicious local flavour.</p>
+
+                <div class="price">₦3,200</div>
+
+                <div class="soup-item">
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            class="soup-checkbox"
+                            value="3200"
+                            data-name="Efo Riro"
+                        >
+
+                        Select Efo Riro
+
+                    </label>
+
+                    <input
+                        type="number"
+                        class="soup-quantity"
+                        min="0"
+                        value="0"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="menu-card">
+
+                <h3>Pounded Yam</h3>
+
+                <p>Soft and smooth traditional Nigerian swallow.</p>
+
+                <div class="price">₦4,500</div>
+
+                <div class="soup-item">
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            class="soup-checkbox"
+                            value="4500"
+                            data-name="Pounded Yam"
+                        >
+
+                        Select Pounded Yam
+
+                    </label>
+
+                    <input
+                        type="number"
+                        class="soup-quantity"
+                        min="0"
+                        value="0"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="menu-card">
+
+                <h3>Eba</h3>
+
+                <p>Classic Nigerian Eba made fresh.</p>
+
+                <div class="price">₦4,500</div>
+
+                <div class="soup-item">
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            class="soup-checkbox"
+                            value="4500"
+                            data-name="Eba"
+                        >
+
+                        Select Eba
+
+                    </label>
+
+                    <input
+                        type="number"
+                        class="soup-quantity"
+                        min="0"
+                        value="0"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="menu-card">
+
+                <h3>Amala</h3>
+
+                <p>Soft and tasty Amala prepared fresh.</p>
+
+                <div class="price">₦4,500</div>
+
+                <div class="soup-item">
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            class="soup-checkbox"
+                            value="4500"
+                            data-name="Amala"
+                        >
+
+                        Select Amala
+
+                    </label>
+
+                    <input
+                        type="number"
+                        class="soup-quantity"
+                        min="0"
+                        value="0"
+                    >
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         GRILLED AND FASTFOOD
+         ========================= -->
+
+    <section class="menu-section">
+
+        <h2>🍗 Grilled & Fastfood</h2>
+
+        <div class="menu-grid">
+
+
+            <div class="menu-card">
+
+                <h3>Chicken Suya Shawarma</h3>
+
+                <p>
+                    Delicious shawarma with a spicy Nigerian twist.
+                </p>
+
+                <div class="price">₦4,000</div>
+
+                <div class="grilled-item">
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            class="grilled-checkbox"
+                            value="4000"
+                            data-name="Chicken Suya Shawarma"
+                        >
+
+                        Select Chicken Suya Shawarma
+
+                    </label>
+
+                    <input
+                        type="number"
+                        class="grilled-quantity"
+                        min="0"
+                        value="0"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="menu-card">
+
+                <h3>Grilled Fish/Chicken With Chips</h3>
+
+                <p>
+                    Grilled protein served with crispy chips.
+                </p>
+
+                <div class="price">₦4,000</div>
+
+                <div class="grilled-item">
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            class="grilled-checkbox"
+                            value="4000"
+                            data-name="Grilled Fish/Chicken With Chips"
+                        >
+
+                        Select Grilled Fish/Chicken With Chips
+
+                    </label>
+
+                    <input
+                        type="number"
+                        class="grilled-quantity"
+                        min="0"
+                        value="0"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="menu-card">
+
+                <h3>Burgers</h3>
+
+                <p>
+                    Delicious and satisfying burgers prepared fresh.
+                </p>
+
+                <div class="price">₦4,000</div>
+
+                <div class="grilled-item">
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            class="grilled-checkbox"
+                            value="4000"
+                            data-name="Burgers"
+                        >
+
+                        Select Burgers
+
+                    </label>
+
+                    <input
+                        type="number"
+                        class="grilled-quantity"
+                        min="0"
+                        value="0"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="menu-card">
+
+                <h3>Pepper Soup</h3>
+
+                <p>
+                    Hot, spicy, and flavorful Nigerian pepper soup.
+                </p>
+
+                <div class="price">₦4,000</div>
+
+                <div class="grilled-item">
+
+                    <label>
+
+                        <input
+                            type="checkbox"
+                            class="grilled-checkbox"
+                            value="4000"
+                            data-name="Pepper Soup"
+                        >
+
+                        Select Pepper Soup
+
+                    </label>
+
+                    <input
+                        type="number"
+                        class="grilled-quantity"
+                        min="0"
+                        value="0"
+                    >
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         SIDES AND DRINKS
+         ========================= -->
+
+    <section class="menu-section">
+
+        <h2>🍟 Sides & Drinks</h2>
+
+        <div class="side-container">
+
+            <label for="side">
+                Choose an item:
+            </label>
+
+            <select id="side">
+
+                <option value="1500">
+                    Fried Plantain - ₦1,500
+                </option>
+
+                <option value="2000">
+                    MoiMoi - ₦2,000
+                </option>
+
+                <option value="3500">
+                    Fresh Juice - ₦3,500
+                </option>
+
+                <option value="2500">
+                    Soft Drinks - ₦2,500
+                </option>
+
+            </select>
+
+            <br>
+
+            <label for="sideQuantity">
+                Quantity:
+            </label>
+
+            <input
+                id="sideQuantity"
+                type="number"
+                min="0"
+                value="0"
+            >
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         CUSTOMER INFORMATION
+         ========================= -->
+
+    <section class="customer-section">
+
+        <h2>Customer Information</h2>
+
+        <div class="customer-form">
+
+            <label for="customerName">
+                Full Name
+            </label>
+
+            <input
+                id="customerName"
+                type="text"
+                placeholder="Enter your name"
+            >
+
+
+            <label for="phone">
+                Phone Number
+            </label>
+
+            <input
+                id="phone"
+                type="tel"
+                placeholder="Enter your phone number"
+            >
+
+
+            <label for="address">
+                Delivery Address
+            </label>
+
+            <input
+                id="address"
+                type="text"
+                placeholder="Enter your delivery address"
+            >
+
+
+            <label for="deliveryDate">
+                Delivery Date
+            </label>
+
+            <input
+                id="deliveryDate"
+                name="Date"
+                type="date"
+            >
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         ORDER BUTTONS
+         ========================= -->
+
+    <div class="button-container">
+
+        <button id="orderButton">
+            🛒 Order Now
+        </button>
+
+        <button id="clearButton">
+            Clear Order
+        </button>
+
+    </div>
+
+
+    <!-- =========================
+         SHOPPING CART
+         ========================= -->
+
+    <div id="cart">
+
+        <h2>🛒 Your Cart</h2>
+
+        <div id="cartItems">
+            <p>Your cart is empty.</p>
+        </div>
+
+        <h3 id="cartTotal">
+            Total: ₦0.00
+        </h3>
+
+    </div>
+
+
+    <!-- =========================
+         ORDER SUMMARY
+         ========================= -->
+
+    <div id="orderSummary"></div>
+
+
+    <!-- =========================
+         FOOTER
+         ========================= -->
+
+    <footer>
+
+        <p>
+            <strong>Ola's Fastfood Restaurant</strong>
+        </p>
+
+        <p>
+            Deliciousness in every bite!
+        </p>
+
+        <p>
+            © 2026 Ola's Fastfood Restaurant. All rights reserved.
+        </p>
+
+    </footer>
+
+
+    <!-- =========================
+         JAVASCRIPT
+         ========================= -->
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
