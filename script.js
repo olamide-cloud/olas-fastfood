@@ -1,15 +1,4 @@
 // =========================
-// SUPABASE SETTINGS
-// =========================
-
-const SUPABASE_URL =
-    "https://egycijohrzwridwjxkgy.supabase.co";
-
-const SUPABASE_KEY =
-    "sb_publishable_FnnhxukxfnV_nj053jGnQA_R9XM3wZ6";
-
-
-// =========================
 // MONEY FORMAT
 // =========================
 
@@ -34,7 +23,8 @@ let today = new Date().toISOString().split("T")[0];
 document.getElementById("deliveryDate").min = today;
 
 
-orderButton.addEventListener("click", async function() {
+orderButton.addEventListener("click", function() {
+
 
     // =========================
     // MAIN DISHES
@@ -65,7 +55,6 @@ orderButton.addEventListener("click", async function() {
             foodOrders.push({
                 name: name,
                 quantity: quantity,
-                price: price,
                 total: itemTotal
             });
 
@@ -103,7 +92,6 @@ orderButton.addEventListener("click", async function() {
             soupOrders.push({
                 name: name,
                 quantity: quantity,
-                price: price,
                 total: itemTotal
             });
 
@@ -144,7 +132,6 @@ orderButton.addEventListener("click", async function() {
             grilledOrders.push({
                 name: name,
                 quantity: quantity,
-                price: price,
                 total: itemTotal
             });
 
@@ -253,288 +240,128 @@ orderButton.addEventListener("click", async function() {
 
 
     // =========================
-    // ALL ORDER ITEMS
+    // ORDER SUMMARY
     // =========================
 
-    let allOrders = [
+    let summary =
+        "<h2>🍴 Ola's Fastfood</h2>" +
+        "<p><strong>Order Summary</strong></p>";
 
-        ...foodOrders,
 
-        ...soupOrders,
+    // =========================
+    // MAIN DISHES
+    // =========================
 
-        ...grilledOrders
+    foodOrders.forEach(function(order) {
 
-    ];
+        summary +=
+            "<p>" +
+            order.name +
+            " x " +
+            order.quantity +
+            " = " +
+            formatMoney(order.total) +
+            "</p>";
 
+    });
+
+
+    // =========================
+    // SOUPS
+    // =========================
+
+    soupOrders.forEach(function(order) {
+
+        summary +=
+            "<p>" +
+            order.name +
+            " x " +
+            order.quantity +
+            " = " +
+            formatMoney(order.total) +
+            "</p>";
+
+    });
+
+
+    // =========================
+    // GRILLED AND FASTFOOD
+    // =========================
+
+    grilledOrders.forEach(function(order) {
+
+        summary +=
+            "<p>" +
+            order.name +
+            " x " +
+            order.quantity +
+            " = " +
+            formatMoney(order.total) +
+            "</p>";
+
+    });
+
+
+    // =========================
+    // SIDE AND DRINK
+    // =========================
 
     if (sideQuantity > 0) {
 
-        allOrders.push({
-
-            name:
-                sideName.split(" - ")[0],
-
-            quantity:
-                sideQuantity,
-
-            price:
-                sidePrice,
-
-            total:
-                sideTotal
-
-        });
-
-    }
-
-
-    // =========================
-    // SAVE ORDER TO SUPABASE
-    // =========================
-
-    let orderData = {
-
-        customer_name: customerName,
-
-        phone: phone,
-
-        address: address,
-
-        delivery_date: deliveryDate,
-
-        items: JSON.stringify(allOrders),
-
-        total: total
-
-    };
-
-
-    // Prevent multiple clicks while saving
-
-    orderButton.disabled = true;
-
-    orderButton.innerText = "Saving Order...";
-
-
-    try {
-
-        let response = await fetch(
-            SUPABASE_URL + "/rest/v1/orders",
-            {
-
-                method: "POST",
-
-                headers: {
-
-                    "Content-Type":
-                        "application/json",
-
-                    "apikey":
-                        SUPABASE_KEY,
-
-                    "Authorization":
-                        "Bearer " + SUPABASE_KEY,
-
-                    "Prefer":
-                        "return=representation"
-
-                },
-
-                body:
-                    JSON.stringify(orderData)
-
-            }
-        );
-
-
-        // =========================
-        // CHECK FOR ERROR
-        // =========================
-
-        if (!response.ok) {
-
-            let errorData =
-                await response.json();
-
-            console.error(
-                "Supabase error:",
-                errorData
-            );
-
-            alert(
-                "Sorry, your order could not be saved. " +
-                "Please try again."
-            );
-
-            orderButton.disabled = false;
-
-            orderButton.innerText = "Place Order";
-
-            return;
-
-        }
-
-
-        // =========================
-        // ORDER SAVED SUCCESSFULLY
-        // =========================
-
-        let savedOrder =
-            await response.json();
-
-        console.log(
-            "Order saved:",
-            savedOrder
-        );
-
-
-        // =========================
-        // ORDER SUMMARY
-        // =========================
-
-        let summary =
-            "<h2>🍴 Ola's Fastfood</h2>" +
-            "<p><strong>Order Summary</strong></p>";
-
-
-        // =========================
-        // MAIN DISHES
-        // =========================
-
-        foodOrders.forEach(function(order) {
-
-            summary +=
-                "<p>" +
-                order.name +
-                " x " +
-                order.quantity +
-                " = " +
-                formatMoney(order.total) +
-                "</p>";
-
-        });
-
-
-        // =========================
-        // SOUPS
-        // =========================
-
-        soupOrders.forEach(function(order) {
-
-            summary +=
-                "<p>" +
-                order.name +
-                " x " +
-                order.quantity +
-                " = " +
-                formatMoney(order.total) +
-                "</p>";
-
-        });
-
-
-        // =========================
-        // GRILLED AND FASTFOOD
-        // =========================
-
-        grilledOrders.forEach(function(order) {
-
-            summary +=
-                "<p>" +
-                order.name +
-                " x " +
-                order.quantity +
-                " = " +
-                formatMoney(order.total) +
-                "</p>";
-
-        });
-
-
-        // =========================
-        // SIDE AND DRINK
-        // =========================
-
-        if (sideQuantity > 0) {
-
-            summary +=
-                "<p>" +
-                sideName.split(" - ")[0] +
-                " x " +
-                sideQuantity +
-                " = " +
-                formatMoney(sideTotal) +
-                "</p>";
-
-        }
-
-
-        // =========================
-        // CUSTOMER DETAILS
-        // =========================
-
         summary +=
-
-            "<hr>" +
-
-            "<h3>Total = " +
-            formatMoney(total) +
-            "</h3>" +
-
-            "<h3>Customer Information</h3>" +
-
-            "<p>Name: " +
-            customerName +
-            "</p>" +
-
-            "<p>Phone: " +
-            phone +
-            "</p>" +
-
-            "<p>Address: " +
-            address +
-            "</p>" +
-
-            "<p>Delivery Date: " +
-            deliveryDate +
+            "<p>" +
+            sideName.split(" - ")[0] +
+            " x " +
+            sideQuantity +
+            " = " +
+            formatMoney(sideTotal) +
             "</p>";
 
-
-        // =========================
-        // DISPLAY ORDER
-        // =========================
-
-        document.getElementById("orderSummary").innerHTML =
-
-            "<h2>Order Confirmed! 🎉</h2>" +
-
-            "<p>Thank you for your order!</p>" +
-
-            summary;
-
-
-        orderButton.disabled = false;
-
-        orderButton.innerText = "Place Order";
-
-
-    } catch (error) {
-
-        console.error(
-            "Connection error:",
-            error
-        );
-
-        alert(
-            "There was a connection problem. " +
-            "Please check your internet connection and try again."
-        );
-
-        orderButton.disabled = false;
-
-        orderButton.innerText = "Place Order";
-
     }
+
+
+    // =========================
+    // CUSTOMER DETAILS
+    // =========================
+
+    summary +=
+
+        "<hr>" +
+
+        "<h3>Total = " +
+        formatMoney(total) +
+        "</h3>" +
+
+        "<h3>Customer Information</h3>" +
+
+        "<p>Name: " +
+        customerName +
+        "</p>" +
+
+        "<p>Phone: " +
+        phone +
+        "</p>" +
+
+        "<p>Address: " +
+        address +
+        "</p>" +
+
+        "<p>Delivery Date: " +
+        deliveryDate +
+        "</p>";
+
+
+    // =========================
+    // DISPLAY ORDER
+    // =========================
+
+    document.getElementById("orderSummary").innerHTML =
+
+        "<h2>Order Confirmed! 🎉</h2>" +
+
+        "<p>Thank you for your order!</p>" +
+
+        summary;
 
 });
 
