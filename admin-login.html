@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Ola's Fastfood - Admin Login</title>
+
+
+    <style>
+
+        /* =========================
+           GENERAL PAGE
+        ========================= */
+
+        body {
+
+            margin: 0;
+
+            font-family: Arial, sans-serif;
+
+            background-color: #fff8e7;
+
+            min-height: 100vh;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+        }
+
+
+        /* =========================
+           LOGIN BOX
+        ========================= */
+
+        .login-container {
+
+            background-color: white;
+
+            width: 90%;
+
+            max-width: 420px;
+
+            padding: 35px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 4px 15px rgba(0, 0, 0, 0.15);
+
+            text-align: center;
+
+        }
+
+
+        /* =========================
+           LOGO / TITLE
+        ========================= */
+
+        .login-container h1 {
+
+            color: #8b0000;
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .login-container p {
+
+            color: #666;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .form-group {
+
+            text-align: left;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .form-group label {
+
+            display: block;
+
+            margin-bottom: 7px;
+
+            font-weight: bold;
+
+        }
+
+
+        .form-group input {
+
+            width: 100%;
+
+            padding: 12px;
+
+            box-sizing: border-box;
+
+            border: 1px solid #ccc;
+
+            border-radius: 7px;
+
+            font-size: 15px;
+
+        }
+
+
+        .form-group input:focus {
+
+            outline: none;
+
+            border-color: #8b0000;
+
+        }
+
+
+        /* =========================
+           LOGIN BUTTON
+        ========================= */
+
+        #loginButton {
+
+            width: 100%;
+
+            padding: 13px;
+
+            background-color: #8b0000;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 7px;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+        }
+
+
+        #loginButton:hover {
+
+            background-color: #a50000;
+
+        }
+
+
+        /* =========================
+           ERROR MESSAGE
+        ========================= */
+
+        #message {
+
+            margin-top: 20px;
+
+            color: #b00020;
+
+            font-weight: bold;
+
+        }
+
+
+        /* =========================
+           LOADING
+        ========================= */
+
+        .loading {
+
+            opacity: 0.7;
+
+            pointer-events: none;
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         LOGIN BOX
+    ========================= -->
+
+    <div class="login-container">
+
+
+        <h1>Ola's Fastfood</h1>
+
+        <p>Admin Dashboard Login</p>
+
+
+        <!-- =========================
+             LOGIN FORM
+        ========================= -->
+
+        <form id="loginForm">
+
+
+            <div class="form-group">
+
+                <label for="email">
+
+                    Email
+
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter admin email"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="password">
+
+                    Password
+
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Enter admin password"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                id="loginButton"
+            >
+
+                🔐 Login
+
+            </button>
+
+
+        </form>
+
+
+        <div id="message"></div>
+
+
+    </div>
+
+
+
+    <!-- =========================
+         SUPABASE
+    ========================= -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <script>
+
+
+        // =========================
+        // SUPABASE CONNECTION
+        // =========================
+
+        const SUPABASE_URL =
+            "https://egycijohrzwridwjxkgy.supabase.co";
+
+
+        const SUPABASE_KEY =
+            "sb_publishable_FnnhxukxfnV_nj053jGnQA_R9XM3wZ6";
+
+
+        const supabaseClient =
+            supabase.createClient(
+
+                SUPABASE_URL,
+
+                SUPABASE_KEY
+
+            );
+
+
+
+        // =========================
+        // LOGIN FORM
+        // =========================
+
+        const loginForm =
+            document.getElementById(
+                "loginForm"
+            );
+
+
+        const loginButton =
+            document.getElementById(
+                "loginButton"
+            );
+
+
+        const message =
+            document.getElementById(
+                "message"
+            );
+
+
+
+        // =========================
+        // LOGIN
+        // =========================
+
+        loginForm.addEventListener(
+            "submit",
+            async function(event) {
+
+
+                event.preventDefault();
+
+
+                const email =
+                    document.getElementById(
+                        "email"
+                    ).value.trim();
+
+
+                const password =
+                    document.getElementById(
+                        "password"
+                    ).value;
+
+
+
+                // =========================
+                // LOADING
+                // =========================
+
+                loginButton.textContent =
+                    "Logging in... ⏳";
+
+
+                loginButton.classList.add(
+                    "loading"
+                );
+
+
+                message.textContent = "";
+
+
+
+                // =========================
+                // SUPABASE LOGIN
+                // =========================
+
+                const {
+                    data,
+                    error
+                } = await supabaseClient.auth
+                    .signInWithPassword({
+
+                        email: email,
+
+                        password: password
+
+                    });
+
+
+
+                // =========================
+                // LOGIN ERROR
+                // =========================
+
+                if (error) {
+
+                    console.error(
+                        "Login error:",
+                        error
+                    );
+
+
+                    message.textContent =
+                        "❌ " +
+                        error.message;
+
+
+                    loginButton.textContent =
+                        "🔐 Login";
+
+
+                    loginButton.classList.remove(
+                        "loading"
+                    );
+
+
+                    return;
+
+                }
+
+
+
+                // =========================
+                // LOGIN SUCCESS
+                // =========================
+
+                console.log(
+                    "Login successful:",
+                    data.user
+                );
+
+
+                message.style.color =
+                    "green";
+
+
+                message.textContent =
+                    "✅ Login successful!";
+
+
+                // Wait briefly so the
+                // message can be seen.
+
+                setTimeout(
+                    function() {
+
+                        window.location.href =
+                            "admin.html";
+
+                    },
+                    800
+                );
+
+
+            }
+        );
+
+
+    </script>
+
+
+</body>
+
+</html>
