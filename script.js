@@ -3,13 +3,21 @@
 // =========================
 
 function formatMoney(amount) {
-
     return "₦" + amount.toLocaleString("en-NG", {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
     });
-
 }
+
+
+// =========================
+// SUPABASE CONNECTION
+// =========================
+
+const SUPABASE_URL = "https://egycijohrzwridwjxkgy.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_FnnhxukxfnV_nj053jGnQA_R9XM3wZ6";
 
 
 // =========================
@@ -23,39 +31,54 @@ let today = new Date().toISOString().split("T")[0];
 document.getElementById("deliveryDate").min = today;
 
 
-orderButton.addEventListener("click", function() {
+orderButton.addEventListener("click", async function() {
 
 
     // =========================
     // MAIN DISHES
     // =========================
 
-    let foodItems = document.querySelectorAll(".food-item");
+    let foodItems =
+        document.querySelectorAll(".food-item");
 
     let foodTotal = 0;
     let foodOrders = [];
 
+
     foodItems.forEach(function(item) {
 
-        let checkbox = item.querySelector(".food-checkbox");
+        let checkbox =
+            item.querySelector(".food-checkbox");
 
-        let quantity = Number(
-            item.querySelector(".food-quantity").value
-        );
+        let quantity =
+            Number(
+                item.querySelector(".food-quantity").value
+            );
+
 
         if (checkbox.checked && quantity > 0) {
 
-            let name = checkbox.dataset.name;
-            let price = Number(checkbox.value);
+            let name =
+                checkbox.dataset.name;
 
-            let itemTotal = price * quantity;
+            let price =
+                Number(checkbox.value);
+
+            let itemTotal =
+                price * quantity;
+
 
             foodTotal += itemTotal;
 
+
             foodOrders.push({
+
                 name: name,
+
                 quantity: quantity,
+
                 total: itemTotal
+
             });
 
         }
@@ -67,32 +90,47 @@ orderButton.addEventListener("click", function() {
     // SOUPS AND SWALLOWS
     // =========================
 
-    let soupItems = document.querySelectorAll(".soup-item");
+    let soupItems =
+        document.querySelectorAll(".soup-item");
 
     let soupTotal = 0;
     let soupOrders = [];
 
+
     soupItems.forEach(function(item) {
 
-        let checkbox = item.querySelector(".soup-checkbox");
+        let checkbox =
+            item.querySelector(".soup-checkbox");
 
-        let quantity = Number(
-            item.querySelector(".soup-quantity").value
-        );
+        let quantity =
+            Number(
+                item.querySelector(".soup-quantity").value
+            );
+
 
         if (checkbox.checked && quantity > 0) {
 
-            let name = checkbox.dataset.name;
-            let price = Number(checkbox.value);
+            let name =
+                checkbox.dataset.name;
 
-            let itemTotal = price * quantity;
+            let price =
+                Number(checkbox.value);
+
+            let itemTotal =
+                price * quantity;
+
 
             soupTotal += itemTotal;
 
+
             soupOrders.push({
+
                 name: name,
+
                 quantity: quantity,
+
                 total: itemTotal
+
             });
 
         }
@@ -110,6 +148,7 @@ orderButton.addEventListener("click", function() {
     let grilledTotal = 0;
     let grilledOrders = [];
 
+
     grilledItems.forEach(function(item) {
 
         let checkbox =
@@ -120,19 +159,30 @@ orderButton.addEventListener("click", function() {
                 item.querySelector(".grilled-quantity").value
             );
 
+
         if (checkbox.checked && quantity > 0) {
 
-            let name = checkbox.dataset.name;
-            let price = Number(checkbox.value);
+            let name =
+                checkbox.dataset.name;
 
-            let itemTotal = price * quantity;
+            let price =
+                Number(checkbox.value);
+
+            let itemTotal =
+                price * quantity;
+
 
             grilledTotal += itemTotal;
 
+
             grilledOrders.push({
+
                 name: name,
+
                 quantity: quantity,
+
                 total: itemTotal
+
             });
 
         }
@@ -352,16 +402,162 @@ orderButton.addEventListener("click", function() {
 
 
     // =========================
-    // DISPLAY ORDER
+    // PREPARE ITEMS FOR SUPABASE
+    // =========================
+
+    let allOrders = [
+
+        ...foodOrders,
+
+        ...soupOrders,
+
+        ...grilledOrders
+
+    ];
+
+
+    if (sideQuantity > 0) {
+
+        allOrders.push({
+
+            name:
+                sideName.split(" - ")[0],
+
+            quantity:
+                sideQuantity,
+
+            total:
+                sideTotal
+
+        });
+
+    }
+
+
+    // =========================
+    // SAVING MESSAGE
     // =========================
 
     document.getElementById("orderSummary").innerHTML =
 
-        "<h2>Order Confirmed! 🎉</h2>" +
+        "<h2>Saving your order... ⏳</h2>" +
 
-        "<p>Thank you for your order!</p>" +
+        "<p>Please wait.</p>";
 
-        summary;
+
+    // =========================
+    // SEND ORDER TO SUPABASE
+    // =========================
+
+    try {
+
+        let response = await fetch(
+
+            SUPABASE_URL + "/rest/v1/orders",
+
+            {
+
+                method: "POST",
+
+                headers: {
+
+                    "apikey":
+                        SUPABASE_KEY,
+
+                    "Authorization":
+                        "Bearer " + SUPABASE_KEY,
+
+                    "Content-Type":
+                        "application/json",
+
+                    "Prefer":
+                        "return=minimal"
+
+                },
+
+
+                body: JSON.stringify({
+
+                    customer_name:
+                        customerName,
+
+                    phone:
+                        phone,
+
+                    address:
+                        address,
+
+                    delivery_date:
+                        deliveryDate,
+
+                    items:
+                        allOrders,
+
+                    total:
+                        total
+
+                })
+
+            }
+
+        );
+
+
+        // =========================
+        // CHECK SUPABASE RESPONSE
+        // =========================
+
+        if (!response.ok) {
+
+            let errorText =
+                await response.text();
+
+
+            console.error(
+                "Supabase error:",
+                response.status,
+                errorText
+            );
+
+
+            throw new Error(
+                "Supabase returned " +
+                response.status
+            );
+
+        }
+
+
+        // =========================
+        // ORDER CONFIRMED
+        // =========================
+
+        document.getElementById("orderSummary").innerHTML =
+
+            "<h2>Order Confirmed! 🎉</h2>" +
+
+            "<p>Thank you for your order!</p>" +
+
+            summary;
+
+
+    } catch (error) {
+
+        console.error(
+            "Order could not be saved:",
+            error
+        );
+
+
+        document.getElementById("orderSummary").innerHTML =
+
+            "<h2>Order Not Saved ❌</h2>" +
+
+            "<p>Sorry, your order could not be saved.</p>" +
+
+            "<p>Please check your internet connection and try again.</p>";
+
+    }
 
 });
 
@@ -377,7 +573,9 @@ let clearButton =
 clearButton.addEventListener("click", function() {
 
 
-    // Clear Main Dishes
+    // =========================
+    // CLEAR MAIN DISHES
+    // =========================
 
     document.querySelectorAll(".food-checkbox")
         .forEach(function(checkbox) {
@@ -395,7 +593,9 @@ clearButton.addEventListener("click", function() {
         });
 
 
-    // Clear Soups
+    // =========================
+    // CLEAR SOUPS
+    // =========================
 
     document.querySelectorAll(".soup-checkbox")
         .forEach(function(checkbox) {
@@ -413,7 +613,9 @@ clearButton.addEventListener("click", function() {
         });
 
 
-    // Clear Grilled Items
+    // =========================
+    // CLEAR GRILLED ITEMS
+    // =========================
 
     document.querySelectorAll(".grilled-checkbox")
         .forEach(function(checkbox) {
@@ -431,12 +633,16 @@ clearButton.addEventListener("click", function() {
         });
 
 
-    // Clear Side
+    // =========================
+    // CLEAR SIDE
+    // =========================
 
     document.getElementById("sideQuantity").value = 0;
 
 
-    // Clear Customer Information
+    // =========================
+    // CLEAR CUSTOMER INFORMATION
+    // =========================
 
     document.getElementById("customerName").value = "";
 
@@ -447,12 +653,16 @@ clearButton.addEventListener("click", function() {
     document.getElementById("deliveryDate").value = "";
 
 
-    // Clear Order Summary
+    // =========================
+    // CLEAR ORDER SUMMARY
+    // =========================
 
     document.getElementById("orderSummary").innerHTML = "";
 
 
-    // Clear Shopping Cart
+    // =========================
+    // CLEAR SHOPPING CART
+    // =========================
 
     updateCart();
 
@@ -503,6 +713,7 @@ function updateCart() {
 
                 let itemTotal =
                     price * quantity;
+
 
                 total += itemTotal;
 
@@ -556,6 +767,7 @@ function updateCart() {
                 let itemTotal =
                     price * quantity;
 
+
                 total += itemTotal;
 
 
@@ -608,6 +820,7 @@ function updateCart() {
                 let itemTotal =
                     price * quantity;
 
+
                 total += itemTotal;
 
 
@@ -655,6 +868,7 @@ function updateCart() {
 
         let sideTotal =
             sidePrice * sideQuantity;
+
 
         total += sideTotal;
 
